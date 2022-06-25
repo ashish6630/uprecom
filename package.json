@@ -1,0 +1,26 @@
+{
+  "name": "uprecom",
+  "version": "1.0.0",
+  "description": "User Product Recommender",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "pytest ./test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashish6630/uprecom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashish6630/uprecom/issues"
+  },
+  "homepage": "https://github.com/ashish6630/uprecom#readme",
+  "devDependencies": {
+    "jest": "^28.1.1"
+  }
+}
