@@ -1,4 +1,4 @@
-from src.components.preprocess.whitespace import WhitespaceFilter
+from src.components.preprocess.whitespacefilter import WhitespaceFilter
 
 
 def test_whitespace_scenarios():

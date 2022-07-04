@@ -5,6 +5,7 @@ class Pipeline:
     def __init__(self, processors: List):
         self.pipeline_components = processors
 
-    def process(self):
+    def process(self, text):
         for processor in self.pipeline_components:
-            processor.process()
+            text = processor.process(text)
+        return text
