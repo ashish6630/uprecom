@@ -1,2 +1,3 @@
-# uprecom
+# UPRECOM
 User Product Recommender
+

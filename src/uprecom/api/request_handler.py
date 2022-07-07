@@ -1,10 +1,10 @@
-from model.word2vec.word2vec import Word2VecModel
-from myclasses.enums import all_models, all_product_types
+from uprecom.model.word2vec.word2vec import Word2VecModel
+from uprecom.myclasses.enums import all_models, all_product_types
 
 
 def product_recommender(
+    query_text: str,
     product_type: str = "job_ad",
-    query_text: str = "Bank Manager",
     model_choice: str = "word2vec",
 ):
 
@@ -19,7 +19,3 @@ def product_recommender(
     query_result = model.inference(query_text)
 
     return query_result
-
-
-if __name__ == "__main__":
-    res = product_recommender()

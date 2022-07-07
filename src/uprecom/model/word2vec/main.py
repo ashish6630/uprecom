@@ -2,7 +2,7 @@ from pathlib import Path
 import click
 
 from Settings import job_data_train_path, word2vec_model_path, word2vec_embeddings_path
-from model.word2vec.word2vec import Word2VecModel
+from uprecom.model.word2vec.word2vec import Word2VecModel
 
 
 @click.command()
