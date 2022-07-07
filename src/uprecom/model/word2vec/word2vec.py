@@ -5,14 +5,15 @@ from pathlib import Path
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
-from components.preprocess.lowercasefilter import LowerCaseFilter
-from components.preprocess.specialcharfilter import SpecialCharFilter
-from components.preprocess.stopword_filter import StopwordFilter
-from components.preprocess.tokenizer import Tokenizer
-from components.preprocess.whitespacefilter import WhitespaceFilter
-from model.word2vec.utils import get_train_data, get_embedding_w2v
-from myclasses.pipeline import Pipeline
 from Settings import word2vec_model_path, word2vec_embeddings_path
+
+from uprecom.components.preprocess.lowercasefilter import LowerCaseFilter
+from uprecom.components.preprocess.specialcharfilter import SpecialCharFilter
+from uprecom.components.preprocess.stopword_filter import StopwordFilter
+from uprecom.components.preprocess.tokenizer import Tokenizer
+from uprecom.components.preprocess.whitespacefilter import WhitespaceFilter
+from uprecom.model.word2vec.utils import get_train_data, get_embedding_w2v
+from uprecom.myclasses.pipeline import Pipeline
 
 
 class Word2VecModel:
@@ -35,7 +36,20 @@ class Word2VecModel:
         self.workers = workers
 
     def train(self, train_data_path, model_dir_path, vectors_dir_path):
-        """Train script ."""
+        """Train script performs the following tasks:
+
+        - Preprocess given text data.
+        - Train a word2vec model on the given model.
+        - Save a parquet file with 2 columns, the given text data + its relevant document embedding.
+
+        Document vectors in the final parquet file will be used to calculate cosine similarity and fetch
+        relevant input documents for a query word during inference.
+
+        Args:
+            train_data_path: Path to a parquet file with mandatory column job description.
+            model_dir_path: Path to use for saving trained word2vec model file.
+            vectors_dir_path: Path to use for saving final job description + document vector parquet file.
+        """
 
         train_df = get_train_data(train_data_path)
 
@@ -66,7 +80,7 @@ class Word2VecModel:
             ]
         )
 
-        w2v_model.save(word2vec_model_path.as_posix())
+        w2v_model.save(model_dir_path.as_posix())
         train_df.to_parquet(vectors_dir_path, schema=schema)
 
     @staticmethod
@@ -74,7 +88,18 @@ class Word2VecModel:
         query_text: str,
         model_dir_path: Path = word2vec_model_path,
         vectors_dir_path: Path = word2vec_embeddings_path,
-    ):
+    ) -> pd.DataFrame:
+        """Returns 10 most relevant documents for a given query text.
+
+        Args:
+            query_text: Search keyword.
+            model_dir_path: Location of trained word2vec model obtained after running train.
+            vectors_dir_path: Location of parquet file with documents and their relevant document vectors
+            obtained after running train.
+        Returns:
+            A dataframe with 10 entries corresponding to the 10 most relevant documents for a
+            specified query text.
+        """
 
         all_vectors = pd.read_parquet(vectors_dir_path)
         w2v_model = Word2Vec.load(model_dir_path.as_posix())
