@@ -1,4 +1,4 @@
-from uprecom.components.preprocess.whitespacefilter import WhitespaceFilter
+from src.uprecom.components.preprocess.whitespacefilter import WhitespaceFilter
 
 
 def test_whitespace_scenarios():
